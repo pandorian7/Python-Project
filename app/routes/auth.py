@@ -208,6 +208,22 @@ def change_password():
 
     return jsonify({"message": "Password changed successfully"})
 
+@bp.route("/auth/user/<int:user_id>", methods=["DELETE"])
+@jwt_required()
+def delete_user(user_id):
+    """Delete a user by ID (Admin-only)"""
+    claims = get_jwt()
+    if claims.get("role") != "admin":
+        return jsonify({"message": "Role admin required"}), 403
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({"message": "User deleted successfully"}), 200
 
 @bp.route("/auth/users", methods=["GET"])
 @jwt_required()

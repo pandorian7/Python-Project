@@ -3,6 +3,7 @@ from flask import jsonify
 
 def validate_email(email):
     """Validate email format"""
+    # ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     if re.match(pattern, email) is None:
         return False

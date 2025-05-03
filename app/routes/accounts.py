@@ -55,12 +55,17 @@ def get_account(account_id):
     ).first()
     
     if not account:
-        return jsonify({'status': 'success', 'message': 'Account retrieved'}), 200
+        return jsonify({'message': 'Account not found'}), 404
     
     return jsonify({
-        'account_detail': account.to_dict(),
-        'balance': round(float(account.balance), 1),
-    })
+        'account_detail': {
+            'id': account.id,
+            'category': account.account_type,
+            'label': account.account_name,
+            'balance': round(float(account.balance), 1)
+        },
+        'balance': round(float(account.balance), 1)
+    }), 200
 
 @bp.route('', methods=['POST'])
 @jwt_required()

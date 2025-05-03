@@ -167,9 +167,15 @@ def get_profile():
 
 
 @bp.route("/auth/verify", methods=["POST"])
+@jwt_required()
 def verify_token():
     """Verify if a token is valid and not expired"""
-    return jsonify({"message": "Token is valid", "verified": True})
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if user:
+        return jsonify({"message": "Token is valid", "verified": True})
+    else:
+        return jsonify({"message": "Token is not valid", "verified": False})
 
 
 @bp.route("/auth/change-password", methods=["POST"])

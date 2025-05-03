@@ -51,7 +51,7 @@ def get_account(account_id):
     user_id = int(get_jwt_identity())
     
     account = Account.query.filter(
-        Account.id == account_id
+        Account.id == account_id, Account.user_id == user_id
     ).first()
     
     if not account:

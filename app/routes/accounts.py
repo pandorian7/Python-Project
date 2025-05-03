@@ -80,10 +80,10 @@ def create_account():
     
     account_name = data.get('account_name') or data.get('name')
     
-    if account_name is not None and (len(account_name) > 90):
+    if (len(account_name) < 3) or (len(account_name) > 90):
         return error_response('Account name must be between 3 and 90 characters', 400)
     
-    initial_balance = data.get('initial_balance') or data.get('balance', 0.0)
+    initial_balance = data.get('initial_balance', 0.0) or data.get('balance', 0.0)
     try:
         initial_balance = float(initial_balance)
         if initial_balance < -50.0:
